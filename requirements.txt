@@ -1,0 +1,10 @@
+streamlit
+supabase
+plotly
+pandas
+numpy
+matplotlib
+sympy
+python-dotenv
+python-dateutil
+PyPDF2

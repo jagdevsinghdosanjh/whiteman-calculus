@@ -1,0 +1,64 @@
+# ============================
+# Python & Virtual Environment
+# ============================
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+
+# Virtual environments
+venv/
+.env/
+.whiteman-calculus-venv/
+*.venv/
+
+# ============================
+# Streamlit
+# ============================
+.streamlit/secrets.toml
+.streamlit/*.lock
+.streamlit/*.json
+
+# ============================
+# Supabase
+# ============================
+supabase/.temp/
+supabase/.branches/
+supabase/.config/
+supabase/.local/
+supabase/.cache/
+supabase/.env
+supabase/functions/*/node_modules/
+supabase/functions/*/.npm/
+
+# ============================
+# Project Data
+# ============================
+data/attendance/*.json
+data/*.csv
+data/*.xlsx
+
+# ============================
+# Logs
+# ============================
+*.log
+logs/
+debug.log
+
+# ============================
+# OS / Editor Files
+# ============================
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# ============================
+# Build / Packaging
+# ============================
+dist/
+build/
+*.egg-info/

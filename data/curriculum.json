@@ -1,0 +1,130 @@
+{
+  "Week 1": {
+    "Day 1": "Functions & Graphs (Whitman Ch.1)",
+    "Day 2": "Inverse Functions & Transformations",
+    "Day 3": "Limits – Intuition (Whitman Ch.2)",
+    "Day 4": "Limits – Rigorous MIT Definition",
+    "Day 5": "Continuity & Limit Laws",
+    "Day 6": "Problem Set + Function Visualizations"
+  },
+  "Week 2": {
+    "Day 1": "Derivative Foundations (Whitman Ch.3)",
+    "Day 2": "Derivative Definition (MIT Unit 2)",
+    "Day 3": "Tangent Line Visualizer",
+    "Day 4": "Chain Rule",
+    "Day 5": "Implicit Differentiation",
+    "Day 6": "Problem Set + Derivative Applications"
+  },
+  "Week 3": {
+    "Day 1": "Rates of Change",
+    "Day 2": "Slope of Tangent Line",
+    "Day 3": "Derivative as Limit (h → 0)",
+    "Day 4": "Logarithmic Differentiation",
+    "Day 5": "Higher Order Derivatives",
+    "Day 6": "Problem Set + Tangent Explorer"
+  },
+  "Week 4": {
+    "Day 1": "Product & Quotient Rule",
+    "Day 2": "Chain Rule Deep Dive",
+    "Day 3": "Implicit Differentiation (Advanced)",
+    "Day 4": "Related Rates (Whitman Ch.4)",
+    "Day 5": "Optimization Basics",
+    "Day 6": "Problem Set + Optimization Visualizer"
+  },
+  "Week 5": {
+    "Day 1": "Curve Sketching",
+    "Day 2": "Maxima & Minima",
+    "Day 3": "Applied Optimization",
+    "Day 4": "Newton’s Method",
+    "Day 5": "Linear Approximation",
+    "Day 6": "Problem Set + Applications"
+  },
+  "Week 6": {
+    "Day 1": "Riemann Sums (Whitman Ch.5)",
+    "Day 2": "Definite Integrals",
+    "Day 3": "Fundamental Theorem of Calculus",
+    "Day 4": "Area Under Curve",
+    "Day 5": "Accumulation Functions",
+    "Day 6": "Problem Set + Riemann Visualizer"
+  },
+  "Week 7": {
+    "Day 1": "Integration by Substitution",
+    "Day 2": "Integration by Parts",
+    "Day 3": "Partial Fractions",
+    "Day 4": "Trig Integrals",
+    "Day 5": "Improper Integrals",
+    "Day 6": "Problem Set + Integration Engine"
+  },
+  "Week 8": {
+    "Day 1": "Area Between Curves",
+    "Day 2": "Volumes: Disk Method",
+    "Day 3": "Volumes: Washer Method",
+    "Day 4": "Volumes: Shell Method",
+    "Day 5": "Arc Length",
+    "Day 6": "Problem Set + Volume Visualizer"
+  },
+  "Week 9": {
+    "Day 1": "Differential Equations (Whitman Ch.8)",
+    "Day 2": "Separable ODEs",
+    "Day 3": "Linear ODEs",
+    "Day 4": "Direction Fields",
+    "Day 5": "Growth & Decay Models",
+    "Day 6": "Problem Set + ODE Solver"
+  },
+  "Week 10": {
+    "Day 1": "Sequences",
+    "Day 2": "Series & Convergence Tests",
+    "Day 3": "Power Series",
+    "Day 4": "Taylor Series",
+    "Day 5": "Error Bounds",
+    "Day 6": "Problem Set + Taylor Visualizer"
+  },
+  "Week 11": {
+    "Day 1": "Multivariable Functions (Whitman Ch.11)",
+    "Day 2": "Level Curves",
+    "Day 3": "Partial Derivatives",
+    "Day 4": "Gradients",
+    "Day 5": "Directional Derivatives",
+    "Day 6": "Problem Set + Gradient Visualizer"
+  },
+  "Week 12": {
+    "Day 1": "Critical Points",
+    "Day 2": "Hessian Matrix",
+    "Day 3": "Lagrange Multipliers",
+    "Day 4": "Multivariable Optimization",
+    "Day 5": "Applications",
+    "Day 6": "Problem Set + Optimization Engine"
+  },
+  "Week 13": {
+    "Day 1": "Double Integrals",
+    "Day 2": "Triple Integrals",
+    "Day 3": "Change of Variables",
+    "Day 4": "Jacobian Determinants",
+    "Day 5": "Applications",
+    "Day 6": "Problem Set + Region Plotter"
+  },
+  "Week 14": {
+    "Day 1": "Vector Fields",
+    "Day 2": "Divergence",
+    "Day 3": "Curl",
+    "Day 4": "Line Integrals",
+    "Day 5": "Green’s Theorem",
+    "Day 6": "Problem Set + Vector Field Explorer"
+  },
+  "Week 15": {
+    "Day 1": "Surface Integrals",
+    "Day 2": "Flux",
+    "Day 3": "Stokes’ Theorem",
+    "Day 4": "Divergence Theorem",
+    "Day 5": "Applications",
+    "Day 6": "Problem Set + Surface Integral Visualizer"
+  },
+  "Week 16": {
+    "Day 1": "Master Review – Derivatives",
+    "Day 2": "Master Review – Integrals",
+    "Day 3": "Master Review – Series",
+    "Day 4": "Master Review – Multivariable",
+    "Day 5": "Master Review – Vector Calculus",
+    "Day 6": "Final Problem Set + Concept Maps"
+  }
+}
