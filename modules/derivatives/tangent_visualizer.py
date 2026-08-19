@@ -9,38 +9,7 @@ def tangent_visualizer():
     x0 = st.number_input("Point x0", value=1.0)
     h = st.number_input("Small h", value=1e-3)
 
-    # Define x for vectorized evaluation
-    xs = np.linspace(x0 - 3, x0 + 3, 400)
-
-    # Safe evaluation environment
-    safe_env = {"x": xs, "np": np}
-
-    # Evaluate f(x)
-    try:
-        ys = eval(expr, {"__builtins__": {}}, safe_env)
-    except Exception as e:
-        st.error(f"Error in expression: {e}")
-        return
-
-    # Evaluate f(x0) and f(x0+h)
-    try:
-        f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
-        f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
-    except Exception as e:
-        st.error(f"Error evaluating at x0: {e}")
-        return
-
-    slope = (f_x0_h - f_x0) / h
-    tangent_ys = f_x0 + slope * (xs - x0)
-
-    # Plot
-    fig, ax = plt.subplots()
-    ax.plot(xs, ys, label="f(x)")
-    ax.plot(xs, tangent_ys, label="Tangent at x0", linestyle="--")
-    ax.scatter([x0], [f_x0], color="red")
-    ax.legend()
-    st.pyplot(fig)
-        # -----------------------------
+    # -----------------------------
     # Prevent h = 0 (undefined slope)
     # -----------------------------
     if h == 0:
@@ -48,15 +17,36 @@ def tangent_visualizer():
         return
 
     # -----------------------------
+    # Define x for vectorized evaluation
+    # -----------------------------
+    xs = np.linspace(x0 - 3, x0 + 3, 400)
+    safe_env = {"x": xs, "np": np}
+
+    # -----------------------------
+    # Evaluate f(x) over the range
+    # -----------------------------
+    try:
+        ys = eval(expr, {"__builtins__": {}}, safe_env)
+
+        # If the function blows up anywhere on the graph
+        if np.any(np.isnan(ys)) or np.any(np.isinf(ys)):
+            st.error("The function is undefined or has an asymptote in the plotted region.")
+            return
+
+    except Exception as e:
+        st.error(f"Error in expression: {e}")
+        return
+
+    # -----------------------------
     # Evaluate f(x0) and f(x0+h)
     # -----------------------------
     try:
         f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
         f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
 
-        # Catch division-by-zero inside the function itself
+        # Catch undefined values at the evaluation points
         if np.isnan(f_x0) or np.isnan(f_x0_h) or np.isinf(f_x0) or np.isinf(f_x0_h):
-            st.error("The function is undefined at this point (division by zero or asymptote). Choose a different x₀.")
+            st.error("The function is undefined at x₀ or x₀ + h (division by zero or asymptote). Choose a different x₀.")
             return
 
     except ZeroDivisionError:
@@ -66,9 +56,24 @@ def tangent_visualizer():
         st.error(f"Error evaluating at x₀: {e}")
         return
 
+    # -----------------------------
+    # Compute slope and tangent line
+    # -----------------------------
+    slope = (f_x0_h - f_x0) / h
+    tangent_ys = f_x0 + slope * (xs - x0)
+
+    # -----------------------------
+    # Plot
+    # -----------------------------
+    fig, ax = plt.subplots()
+    ax.plot(xs, ys, label="f(x)")
+    ax.plot(xs, tangent_ys, label="Tangent at x₀", linestyle="--")
+    ax.scatter([x0], [f_x0], color="red")
+    ax.legend()
+    st.pyplot(fig)
 
     # ---------------------------------------------------------
-    # Whitman Calculus Dynamic Description (Inside Function)
+    # Whitman Calculus Dynamic Description
     # ---------------------------------------------------------
     st.markdown("---")
     st.subheader("📘 Whitman Calculus Interpretation")
@@ -80,11 +85,9 @@ This tool shows exactly what Whitman Calculus Chapter 3 describes:
 the **derivative as the slope of the tangent line**.
 
 ### 1. Function You Entered  
-You entered:  
 **f(x) = {expr}**
 
 ### 2. Point of Tangency  
-You chose:  
 **x₀ = {x0}**
 
 At this point:
@@ -92,7 +95,6 @@ At this point:
 - **f'(x₀) ≈ {slope:.4f}**
 
 ### 3. The Role of h  
-You selected:  
 **h = {h}**
 
 As h → 0, the secant line becomes the tangent line.
@@ -122,9 +124,6 @@ This visualizer helps you *feel* the derivative:
     st.subheader("🔍 Try These Functions for More Clarity")
 
     st.markdown("""
-Below are some functions commonly used in Whitman Calculus to build intuition.
-You can **copy–paste** any of them into the input box above.
-
 ### 📘 Polynomial Functions
 - `x**2`
 - `x**3`
@@ -175,18 +174,14 @@ This is exactly how Whitman builds geometric intuition for derivatives.
 #     # Safe evaluation environment
 #     safe_env = {"x": xs, "np": np}
 
-#     # -----------------------------
-#     # Evaluate f(x) over the range
-#     # -----------------------------
+#     # Evaluate f(x)
 #     try:
 #         ys = eval(expr, {"__builtins__": {}}, safe_env)
 #     except Exception as e:
 #         st.error(f"Error in expression: {e}")
 #         return
 
-#     # -----------------------------
-#     # Evaluate f(x0) and f(x0 + h)
-#     # -----------------------------
+#     # Evaluate f(x0) and f(x0+h)
 #     try:
 #         f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
 #         f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
@@ -194,24 +189,45 @@ This is exactly how Whitman builds geometric intuition for derivatives.
 #         st.error(f"Error evaluating at x0: {e}")
 #         return
 
-#     # -----------------------------
-#     # Compute slope and tangent line
-#     # -----------------------------
 #     slope = (f_x0_h - f_x0) / h
 #     tangent_ys = f_x0 + slope * (xs - x0)
 
-#     # -----------------------------
 #     # Plot
-#     # -----------------------------
 #     fig, ax = plt.subplots()
 #     ax.plot(xs, ys, label="f(x)")
 #     ax.plot(xs, tangent_ys, label="Tangent at x0", linestyle="--")
 #     ax.scatter([x0], [f_x0], color="red")
 #     ax.legend()
 #     st.pyplot(fig)
+#         # -----------------------------
+#     # Prevent h = 0 (undefined slope)
+#     # -----------------------------
+#     if h == 0:
+#         st.error("h = 0 makes the difference quotient undefined. Choose a small non‑zero h (e.g., 0.001).")
+#         return
+
+#     # -----------------------------
+#     # Evaluate f(x0) and f(x0+h)
+#     # -----------------------------
+#     try:
+#         f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
+#         f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
+
+#         # Catch division-by-zero inside the function itself
+#         if np.isnan(f_x0) or np.isnan(f_x0_h) or np.isinf(f_x0) or np.isinf(f_x0_h):
+#             st.error("The function is undefined at this point (division by zero or asymptote). Choose a different x₀.")
+#             return
+
+#     except ZeroDivisionError:
+#         st.error("The function has a vertical asymptote or division by zero at this point. Choose a different x₀.")
+#         return
+#     except Exception as e:
+#         st.error(f"Error evaluating at x₀: {e}")
+#         return
+
 
 #     # ---------------------------------------------------------
-#     # Whitman Calculus Dynamic Description (Visible to Students)
+#     # Whitman Calculus Dynamic Description (Inside Function)
 #     # ---------------------------------------------------------
 #     st.markdown("---")
 #     st.subheader("📘 Whitman Calculus Interpretation")
@@ -226,45 +242,28 @@ This is exactly how Whitman builds geometric intuition for derivatives.
 # You entered:  
 # **f(x) = {expr}**
 
-# Whitman uses simple, smooth functions like this to build intuition about
-# how tangent lines behave and how slopes change.
-
 # ### 2. Point of Tangency  
 # You chose:  
 # **x₀ = {x0}**
 
 # At this point:
-# - The function value is **f(x₀) = {f_x0:.4f}**
-# - The approximate derivative is **f'(x₀) ≈ {slope:.4f}**
-
-# Whitman emphasizes that the tangent line at x₀ is the **best linear approximation**
-# to the curve near that point.
+# - **f(x₀) = {f_x0:.4f}**
+# - **f'(x₀) ≈ {slope:.4f}**
 
 # ### 3. The Role of h  
 # You selected:  
 # **h = {h}**
 
-# In Whitman’s limit definition:
-# \[f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}\]
-
-
-
-# Your value of h controls how close the secant line is to the true tangent.
-# As h → 0, the secant becomes the tangent — exactly what you see here.
+# As h → 0, the secant line becomes the tangent line.
 
 # ### 4. Tangent Line You Saw  
-# The tangent line plotted is:
 
 
+# \[
+# T(x) = f(x_0) + f'(x_0)(x - x_0)
+# \]
 
-# \[T(x) = f(x_0) + f'(x_0)(x - x_0)\]
 
-
-
-# Whitman stresses that this line:
-# - touches the curve at exactly one point  
-# - shares the same instantaneous slope  
-# - is the geometric meaning of the derivative  
 
 # ### 📚 Why This Matters (Whitman Style)
 
@@ -273,6 +272,166 @@ This is exactly how Whitman builds geometric intuition for derivatives.
 # - You see the tangent  
 # - You see how h controls the limit  
 # - You see slope emerging from geometry  
-
-# This is exactly the intuition Whitman builds in **Chapter 3: Derivatives**.
 # """)
+
+#     # ---------------------------------------------------------
+#     # Suggested Functions for Students to Try (Copy–Paste Ready)
+#     # ---------------------------------------------------------
+#     st.markdown("---")
+#     st.subheader("🔍 Try These Functions for More Clarity")
+
+#     st.markdown("""
+# Below are some functions commonly used in Whitman Calculus to build intuition.
+# You can **copy–paste** any of them into the input box above.
+
+# ### 📘 Polynomial Functions
+# - `x**2`
+# - `x**3`
+# - `x**4 - 3*x**2 + 2`
+
+# ### 📘 Root & Absolute Value
+# - `np.sqrt(x)`
+# - `abs(x)`
+
+# ### 📘 Trigonometric Functions
+# - `np.sin(x)`
+# - `np.cos(x)`
+# - `np.tan(x)`
+
+# ### 📘 Exponential & Logarithmic
+# - `np.exp(x)`
+# - `np.log(x)`   # natural log
+
+# ### 📘 Rational Functions
+# - `1/x`
+# - `(x**2 - 1)/(x - 1)`
+# - `1/(x**2 + 1)`
+
+# ### 📘 Interesting Shapes
+# - `np.sin(x)/x`
+# - `np.exp(-x**2)`
+# - `np.sin(x**2)`
+
+# ### 💡 Tip
+# Try changing **x₀** and **h** for each function to see how the tangent line behaves.
+# This is exactly how Whitman builds geometric intuition for derivatives.
+# """)
+
+# # import streamlit as st
+# # import numpy as np
+# # import matplotlib.pyplot as plt
+
+# # def tangent_visualizer():
+# #     st.header("Derivative / Tangent Visualizer")
+
+# #     expr = st.text_input("Function f(x)", "x**2")
+# #     x0 = st.number_input("Point x0", value=1.0)
+# #     h = st.number_input("Small h", value=1e-3)
+
+# #     # Define x for vectorized evaluation
+# #     xs = np.linspace(x0 - 3, x0 + 3, 400)
+
+# #     # Safe evaluation environment
+# #     safe_env = {"x": xs, "np": np}
+
+# #     # -----------------------------
+# #     # Evaluate f(x) over the range
+# #     # -----------------------------
+# #     try:
+# #         ys = eval(expr, {"__builtins__": {}}, safe_env)
+# #     except Exception as e:
+# #         st.error(f"Error in expression: {e}")
+# #         return
+
+# #     # -----------------------------
+# #     # Evaluate f(x0) and f(x0 + h)
+# #     # -----------------------------
+# #     try:
+# #         f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
+# #         f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
+# #     except Exception as e:
+# #         st.error(f"Error evaluating at x0: {e}")
+# #         return
+
+# #     # -----------------------------
+# #     # Compute slope and tangent line
+# #     # -----------------------------
+# #     slope = (f_x0_h - f_x0) / h
+# #     tangent_ys = f_x0 + slope * (xs - x0)
+
+# #     # -----------------------------
+# #     # Plot
+# #     # -----------------------------
+# #     fig, ax = plt.subplots()
+# #     ax.plot(xs, ys, label="f(x)")
+# #     ax.plot(xs, tangent_ys, label="Tangent at x0", linestyle="--")
+# #     ax.scatter([x0], [f_x0], color="red")
+# #     ax.legend()
+# #     st.pyplot(fig)
+
+# #     # ---------------------------------------------------------
+# #     # Whitman Calculus Dynamic Description (Visible to Students)
+# #     # ---------------------------------------------------------
+# #     st.markdown("---")
+# #     st.subheader("📘 Whitman Calculus Interpretation")
+
+# #     st.markdown(f"""
+# # ### 🎯 What You Just Visualized
+
+# # This tool shows exactly what Whitman Calculus Chapter 3 describes:
+# # the **derivative as the slope of the tangent line**.
+
+# # ### 1. Function You Entered  
+# # You entered:  
+# # **f(x) = {expr}**
+
+# # Whitman uses simple, smooth functions like this to build intuition about
+# # how tangent lines behave and how slopes change.
+
+# # ### 2. Point of Tangency  
+# # You chose:  
+# # **x₀ = {x0}**
+
+# # At this point:
+# # - The function value is **f(x₀) = {f_x0:.4f}**
+# # - The approximate derivative is **f'(x₀) ≈ {slope:.4f}**
+
+# # Whitman emphasizes that the tangent line at x₀ is the **best linear approximation**
+# # to the curve near that point.
+
+# # ### 3. The Role of h  
+# # You selected:  
+# # **h = {h}**
+
+# # In Whitman’s limit definition:
+# # \[f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}\]
+
+
+
+# # Your value of h controls how close the secant line is to the true tangent.
+# # As h → 0, the secant becomes the tangent — exactly what you see here.
+
+# # ### 4. Tangent Line You Saw  
+# # The tangent line plotted is:
+
+
+
+# # \[T(x) = f(x_0) + f'(x_0)(x - x_0)\]
+
+
+
+# # Whitman stresses that this line:
+# # - touches the curve at exactly one point  
+# # - shares the same instantaneous slope  
+# # - is the geometric meaning of the derivative  
+
+# # ### 📚 Why This Matters (Whitman Style)
+
+# # This visualizer helps you *feel* the derivative:
+# # - You see the curve  
+# # - You see the tangent  
+# # - You see how h controls the limit  
+# # - You see slope emerging from geometry  
+
+# # This is exactly the intuition Whitman builds in **Chapter 3: Derivatives**.
+# # """)
