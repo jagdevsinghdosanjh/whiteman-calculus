@@ -40,6 +40,32 @@ def tangent_visualizer():
     ax.scatter([x0], [f_x0], color="red")
     ax.legend()
     st.pyplot(fig)
+        # -----------------------------
+    # Prevent h = 0 (undefined slope)
+    # -----------------------------
+    if h == 0:
+        st.error("h = 0 makes the difference quotient undefined. Choose a small non‑zero h (e.g., 0.001).")
+        return
+
+    # -----------------------------
+    # Evaluate f(x0) and f(x0+h)
+    # -----------------------------
+    try:
+        f_x0 = eval(expr, {"__builtins__": {}}, {"x": x0, "np": np})
+        f_x0_h = eval(expr, {"__builtins__": {}}, {"x": x0 + h, "np": np})
+
+        # Catch division-by-zero inside the function itself
+        if np.isnan(f_x0) or np.isnan(f_x0_h) or np.isinf(f_x0) or np.isinf(f_x0_h):
+            st.error("The function is undefined at this point (division by zero or asymptote). Choose a different x₀.")
+            return
+
+    except ZeroDivisionError:
+        st.error("The function has a vertical asymptote or division by zero at this point. Choose a different x₀.")
+        return
+    except Exception as e:
+        st.error(f"Error evaluating at x₀: {e}")
+        return
+
 
     # ---------------------------------------------------------
     # Whitman Calculus Dynamic Description (Inside Function)
