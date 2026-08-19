@@ -89,6 +89,49 @@ This visualizer helps you *feel* the derivative:
 - You see slope emerging from geometry  
 """)
 
+    # ---------------------------------------------------------
+    # Suggested Functions for Students to Try (Copy–Paste Ready)
+    # ---------------------------------------------------------
+    st.markdown("---")
+    st.subheader("🔍 Try These Functions for More Clarity")
+
+    st.markdown("""
+Below are some functions commonly used in Whitman Calculus to build intuition.
+You can **copy–paste** any of them into the input box above.
+
+### 📘 Polynomial Functions
+- `x**2`
+- `x**3`
+- `x**4 - 3*x**2 + 2`
+
+### 📘 Root & Absolute Value
+- `np.sqrt(x)`
+- `abs(x)`
+
+### 📘 Trigonometric Functions
+- `np.sin(x)`
+- `np.cos(x)`
+- `np.tan(x)`
+
+### 📘 Exponential & Logarithmic
+- `np.exp(x)`
+- `np.log(x)`   # natural log
+
+### 📘 Rational Functions
+- `1/x`
+- `(x**2 - 1)/(x - 1)`
+- `1/(x**2 + 1)`
+
+### 📘 Interesting Shapes
+- `np.sin(x)/x`
+- `np.exp(-x**2)`
+- `np.sin(x**2)`
+
+### 💡 Tip
+Try changing **x₀** and **h** for each function to see how the tangent line behaves.
+This is exactly how Whitman builds geometric intuition for derivatives.
+""")
+
 # import streamlit as st
 # import numpy as np
 # import matplotlib.pyplot as plt
