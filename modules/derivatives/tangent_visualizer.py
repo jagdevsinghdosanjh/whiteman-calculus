@@ -85,12 +85,7 @@ You selected:
 **h = {h}**
 
 In Whitman’s limit definition:
-
-
-
-\[
-f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}
-\]
+\[f'(x_0) = \lim_{h \to 0} \frac{f(x_0 + h) - f(x_0)}{h}\]
 
 
 
@@ -102,9 +97,7 @@ The tangent line plotted is:
 
 
 
-\[
-T(x) = f(x_0) + f'(x_0)(x - x_0)
-\]
+\[T(x) = f(x_0) + f'(x_0)(x - x_0)\]
 
 
 
