@@ -6,7 +6,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data", "curriculum.json")
 
 st.set_page_config(page_title="Week 1 – Topics Overview", layout="wide")
-
 st.title("Week 1 – Topics Overview")
 
 with open(DATA_PATH, "r", encoding="utf-8") as f:
@@ -18,4 +17,33 @@ if not week:
     st.warning("No topics defined for Week 1.")
 else:
     for day, topic in week.items():
-        st.markdown(f"### {day}: {topic}")
+        # Convert "Day 1" → "Week1_Day1"
+        page_name = f"Week1_{day.replace(' ', '')}"
+
+        st.page_link(
+            page=f"pages/{page_name}.py",
+            label=f"### {day}: {topic}",
+            icon="📘"
+        )
+
+# import streamlit as st
+# import json
+# import os
+
+# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# DATA_PATH = os.path.join(BASE_DIR, "data", "curriculum.json")
+
+# st.set_page_config(page_title="Week 1 – Topics Overview", layout="wide")
+
+# st.title("Week 1 – Topics Overview")
+
+# with open(DATA_PATH, "r", encoding="utf-8") as f:
+#     curriculum = json.load(f)
+
+# week = curriculum.get("Week 1", {})
+
+# if not week:
+#     st.warning("No topics defined for Week 1.")
+# else:
+#     for day, topic in week.items():
+#         st.markdown(f"### {day}: {topic}")
